@@ -124,13 +124,13 @@
 
 
 (defn redis-cache-factory
-  [& {:keys [host port delay]
+  [& {:keys [host port delay key-prefix]
       :or {host "localhost"
            port 6379}}]
   (cache/seed (RedisCache. {}) {:host host :port port :delay delay}))
 
 (defn redis-ttl-cache-factory
-  [ttl & {:keys [host port delay]
+  [ttl & {:keys [host port delay key-prefix]
           :or {host "localhost"
                port 6379}}]
   (cache/seed (RedisTTLCache. {}) {:host host :port port :delay delay :ttl ttl}))

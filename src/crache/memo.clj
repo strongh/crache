@@ -5,19 +5,20 @@
 
 
 (defn memo-redis
-  [f & {:keys [host port]
+  [f & {:keys [host port key-prefix]
         :or {host "localhost"
              port 6379}}]
   (build-memoizer
    #(clojure.core.memoize.PluggableMemoization.
-     %1 (redis-cache-factory :host host :port port :delay true))
+     %1 (redis-cache-factory :host host :port port :delay true :key-prefix key-prefix))
    f))
 
 (defn memo-ttl-redis
-  [f ttl & {:keys [host port]
+  [f ttl & {:keys [host port key-prefix]
             :or {host "localhost"
                  port 6379}}]
   (build-memoizer
    #(clojure.core.memoize.PluggableMemoization.
-     %1 (redis-ttl-cache-factory ttl :host host :port port :delay true))
+     %1 (redis-ttl-cache-factory ttl :host host :port port
+                                 :delay true :key-prefix key-prefix))
    f))
