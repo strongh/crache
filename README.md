@@ -24,7 +24,7 @@ Awesome! :)
 ### Memoization client
 -------
 ```clj
-(require '[crache.memo :refer [memo-redis]]) ; the ns
+(require '[crache.memo :refer [memo-redis]])
 ```
 ```clj
 ; redis memoizes 'f', binding the client to localhost:6379
