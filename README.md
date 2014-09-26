@@ -11,13 +11,10 @@ Add the following to the `:dependencies` vector of your `project.clj` file:
 ## Usage
 -------
 Start your `redis-server` and connect a crache client to it. 
-Then check your `redis-server` logs:
+Then run `redis-cli monitor | grep -E ' "(G|S)ET" '`:
 ```
-[66942] 23 Sep 03:26:02.328 # Server started, Redis version 2.8.6
-[66942] 23 Sep 03:26:02.330 * The server is now ready to accept connections on port 6379
-[66942] 23 Sep 03:27:43.111 * 1 changes in 60 seconds. Saving...
-[66942] 23 Sep 03:27:43.158 * Background saving started by pid 66972
-[66972] 23 Sep 03:27:43.255 * DB saved on disk
+1411692039.884231 [0 127.0.0.1:50423] "SET" "key-prefix-for-fn(nil {:foo \"\xe5\", :bar 3, :eggs true})"
+1411692039.906472 [0 127.0.0.1:50424] "GET" "key-prefix-for-fn(nil {:foo \"\xe5\", :bar 3, :eggs true})"
 ```
 Awesome! :)
 
