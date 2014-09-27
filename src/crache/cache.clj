@@ -1,6 +1,7 @@
 (ns crache.cache
   (:require [clj-redis.client :as redis]
-            [clojure.core.cache :as cache]))
+            [clojure.core.cache :as cache]
+            [taoensso.nippy :refer [freeze thaw]]))
 
 (def CHARS
      (map char (concat (range 48 58)
@@ -13,12 +14,14 @@
    str
    (take 20 (repeatedly #(rand-nth CHARS)))))
 
+(defn freeze-them [& liquids] (freeze liquids))
+
 (defn read-redis-str
   ([r kp item]
      (read-redis-str r kp item nil))
   ([r kp item not-found]
-     (if-let [item-str (redis/get r (str kp (pr-str item)))]
-       (read-string item-str)
+     (if-let [item-val (redis/get r (freeze-them kp item))]
+       (thaw item-val)
        not-found)))
 
 (cache/defcache RedisCache [$]
@@ -46,19 +49,19 @@
              item not-found)))
   
   (has? [_ item]
-        (redis/exists (:redis-connection $) (str (:key-prefix $) (pr-str item))))
+        (redis/exists (:redis-connection $) (freeze-them (:key-prefix $) item)))
   
   (hit [_ item]
        (RedisCache. $))
   
   (miss [_ item val]
         (redis/set (:redis-connection $)
-                   (str (:key-prefix $) (pr-str item))
-                   (pr-str (if (delay? val) @val val)))
+                   (freeze-them (:key-prefix $) item)
+                   (freeze (if (delay? val) @val val)))
         (RedisCache. $))
   
   (evict [_ item]
-         (redis/del (:redis-connection $) (str (:key-prefix $) (pr-str item)))
+         (redis/del (:redis-connection $) (freeze-them (:key-prefix $) item))
          (RedisCache. $))
   
   (seed [_ base]
@@ -96,20 +99,21 @@
              item not-found)))
   
   (has? [_ item]
-        (redis/exists (:redis-connection $) (str (:key-prefix $) (pr-str item))))
+        (redis/exists (:redis-connection $)
+                      (freeze-them (:key-prefix $) item)))
   
   (hit [_ item]
        (RedisTTLCache. $))
   
   (miss [_ item val]
         (let [redis-connection (:redis-connection $)
-              redis-key (str (:key-prefix $) (pr-str item))]
-          (redis/set redis-connection redis-key (pr-str (if (delay? val) @val val)))
+              redis-key (freeze-them (:key-prefix $) item)]
+          (redis/set redis-connection redis-key (freeze (if (delay? val) @val val)))
           (redis/expire redis-connection redis-key (:ttl $))
           (RedisTTLCache. $)))
   
   (evict [_ item]
-         (redis/del (:redis-connection $) (str (:key-prefix $) (pr-str item)))
+         (redis/del (:redis-connection $) (freeze-them (:key-prefix $) item))
          (RedisTTLCache. $))
   
   (seed [_ base]
