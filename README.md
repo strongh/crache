@@ -5,8 +5,7 @@ Redis backed Caching and Memoization, following `core.cache` and `core.memoize`.
 ### Installing
 -------
 Add the following to the `:dependencies` vector of your `project.clj` file:
-[![clojars version](https://clojars.org/crache/latest-version.svg?raw=true)]
-(https://clojars.org/crache)
+[![clojars version][1]][2]
 
 ## Usage
 -------
@@ -24,16 +23,27 @@ Awesome! :)
 ```clj
 => (require '[crache.memo :refer [memo-redis]])
 ```
+
+[Redis client connection specification][3]:
+
 ```clj
-; redis memoizes 'f', binding the client to localhost:6379 address of the redis server
-=> (def memo-f (memo-redis f))
+(def conn {:pool {} :spec {:host "localhost" :port 6379}})
 ```
+
+```clj
+; redis memoizes 'f', using a key-prefix
+=> (def memo-f (memo-redis f conn (str ::f)))
+```
+
 or
+
 ```clj
-; redis memoizes 'f', binding the client to myapp.provider.com:6300 address of the redis server
-=> (def memo-f (memo-redis f :host "myapp.provider.com" :port 6300))
+; redis memoizes 'f', using a key-prefix and an expire time (60 seconds)
+=> (def memo-f (memo-redis f conn (str ::f) 60))
 ```
+
 then use `memo-f` like you would use your usual memoized fn:
+
 ```clj
 => (memo-f some-input) ;=> some-output
 ```
@@ -43,3 +53,7 @@ then use `memo-f` like you would use your usual memoized fn:
 Copyright (C) 2014 Homer Strong
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+[1]: https://clojars.org/crache/latest-version.svg?raw=true
+[2]: https://clojars.org/crache
+[3]: https://github.com/ptaoussanis/carmine#connections
