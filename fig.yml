@@ -1,0 +1,11 @@
+redis:
+  image: orchardup/redis
+  ports:
+    - "6379"
+lein:
+  image: pandeiro/lein
+  links:
+    - redis:db
+  volumes:
+    - .:/project
+  command: test

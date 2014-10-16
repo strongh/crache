@@ -48,6 +48,30 @@ then use `memo-f` like you would use your usual memoized fn:
 => (memo-f some-input) ;=> some-output
 ```
 
+### Tests
+
+You can run tests in a Docker container via [fig.sh][4]:
+
+```
+$ fig up
+```
+
+You can also run tests interactively from a REPL:
+
+```
+$ fig run lein repl
+```
+
+```clj
+=> (require 'crache.memo-test)
+=> (in-ns 'crache.memo-test)
+=> (run-tests)
+```
+
+> **OSX:** Docker on OSX is a little tricky. Use [boot2docker][5] and get
+> VirtualBox configured so it can map directories from the host into the
+> container. Here is [a pretty good intro to docker on OSX][5].
+
 ### License
 -------
 Copyright (C) 2014 Homer Strong
@@ -57,3 +81,5 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [1]: https://clojars.org/crache/latest-version.svg?raw=true
 [2]: https://clojars.org/crache
 [3]: https://github.com/ptaoussanis/carmine#connections
+[4]: http://www.fig.sh/index.html
+[5]: http://viget.com/extend/how-to-use-docker-on-os-x-the-missing-guide
