@@ -1,4 +1,4 @@
-(defproject crache "1.0.0-SNAPSHOT"
+(defproject crache "1.0.0-rc1"
   :description "Redis-backed caching and memoization, following core.cache and core.memoize"
   :license {:name "Eclipse Public License" :url "http://www.eclipse.org/legal/epl-v10.html"}
   :url "http://github.com/strongh/crache"
