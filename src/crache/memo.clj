@@ -1,5 +1,5 @@
 (ns crache.memo
-  (:import [clojure.core.memoize.PluggableMemoization])
+  (:import [clojure.core.memoize PluggableMemoization])
   (:use [crache.cache :only [redis-cache-factory]]
         [clojure.core.memoize :only [build-memoizer]]))
 
