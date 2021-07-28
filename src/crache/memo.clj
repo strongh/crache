@@ -1,7 +1,7 @@
 (ns crache.memo
   (:import [clojure.core.memoize PluggableMemoization])
-  (:use [crache.cache :only [redis-cache-factory]]
-        [clojure.core.memoize :only [build-memoizer]]))
+  (:require [crache.cache :refer [redis-cache-factory]]
+            [clojure.core.memoize :refer [build-memoizer]]))
 
 
 (defn memo-redis
