@@ -1,0 +1,4 @@
+ {:deps {org.clojure/clojure      {:mvn/version "1.10.2"}
+		 com.taoensso/carmine     {:mvn/version "3.1.0"}
+		 org.clojure/core.cache   {:mvn/version "1.0.207"}
+		 org.clojure/core.memoize {:mvn/version "1.0.236"}}}
