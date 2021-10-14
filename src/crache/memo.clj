@@ -3,7 +3,7 @@
             [clojure.core.memoize :refer [memoizer]]))
 
 (defn memo-redis
-  [f conn key-prefix $ [ttl]]
+  [f conn key-prefix & [ttl]]
   (memoizer
    f
    (apply redis-cache-factory conn key-prefix (when ttl [ttl]))))
