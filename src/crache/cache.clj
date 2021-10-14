@@ -15,23 +15,23 @@
 
   (lookup [_ item not-found]
     (delay (or (wcar* $ (car/get (key-for $ item))) not-found)))
-  
+
   (has? [_ item]
     (= 1 (wcar* $ (car/exists (key-for $ item)))))
-  
+
   (hit [_ item]
     (RedisCache. $))
-  
+
   (miss [_ item val]
     (let [args (when-let [t (:ttl $)] ["ex" t])
           val (if (delay? val) @val val)]
       (wcar* $ (apply car/set (key-for $ item) (car/serialize val) args)))
     (RedisCache. $))
-  
+
   (evict [_ item]
     (wcar* $ (car/del (key-for $ item)))
     (RedisCache. $))
-  
+
   (seed [_ base]
     (RedisCache. base))
 
