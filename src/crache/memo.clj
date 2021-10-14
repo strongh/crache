@@ -7,5 +7,5 @@
   [f conn key-prefix & [ttl]]
   (build-memoizer
    #(clojure.core.memoize.PluggableMemoization.
-     %1 (apply redis-cache-factory conn key-prefix (when ttl [ttl])))
+     (apply redis-cache-factory conn key-prefix (when ttl [ttl])) %1)
    f))
