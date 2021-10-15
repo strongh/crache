@@ -25,7 +25,7 @@
   (miss [_ item val]
     (let [args (when-let [t (:ttl $)] ["ex" t])
           val (if (delay? val) @val val)]
-      (wcar* $ (apply car/set (key-for $ item) (car/freeze (val)) args)))
+      (wcar* $ (apply car/set (key-for $ item) (car/freeze @val) args)))
     (RedisCache. $))
 
   (evict [_ item]
